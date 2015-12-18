@@ -1,4 +1,4 @@
-TOP = ..
+TOP = .
 
 DIRS = src
 streamApp_DEPEND_DIRS  = src

@@ -1,1 +1,7 @@
 src/O.*
+configure
+dbd
+include
+lib
+bin
+
