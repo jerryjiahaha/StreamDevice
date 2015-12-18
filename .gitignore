@@ -1,5 +1,5 @@
 src/O.*
-configure
+configure/O.*
 dbd
 include
 lib
