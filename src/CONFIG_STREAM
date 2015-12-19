@@ -45,6 +45,7 @@ BUSSES += Dummy
 ifdef ASYN
 BUSSES += AsynDriver
 endif
+BUSSES += Filter
 
 # You may add more format converters
 # This requires the naming convention
