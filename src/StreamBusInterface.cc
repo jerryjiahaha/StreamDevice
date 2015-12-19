@@ -18,6 +18,7 @@
 ***************************************************************/
 
 #include "StreamBusInterface.h"
+#include "StreamError.h"
 
 const char* StreamIoStatusStr[] = {
     "StreamIoSuccess",
@@ -68,6 +69,7 @@ find(Client* client, const char* busname, int addr, const char* param)
     StreamBusInterface* bus;
     for (r = StreamBusInterfaceRegistrarBase::first; r; r = r->next)
     {
+	debug("StreamBusInterfaceRegistrarBase Name: %s\n", r->name); 
         bus = r->find(client, busname, addr, param);
         if (bus) return bus;
     }

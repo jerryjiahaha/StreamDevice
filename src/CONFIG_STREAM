@@ -33,6 +33,7 @@ SYNAPPS_RECORDS += scalcout
 
 BUSSES += Debug
 BUSSES += Dummy
+BUSSES += Filter
 
 # You may add more format converters
 # This requires the naming convention
