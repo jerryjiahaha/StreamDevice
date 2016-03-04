@@ -630,27 +630,29 @@ writeHandler()
 	asynStatus status;
 	size_t written = 0;
 
-	pasynUser->timeout = 0;
-	if (pasynGpib) {
-		pasynOctet->flush(pvtOctet, pasynUser);
-	}
-	else {
+	printf("readTimeout: %lf\n", readTimeout);
+	pasynUser->timeout = 0.0001;
+//	if (pasynGpib) {
+//		pasynOctet->flush(pvtOctet, pasynUser);
+//	}
+//	else {
 		// discard any early input, but forward it to potential async records
 		// thus do not use pasynOctet->flush()
 		do {
 			char buffer [256];
 			size_t received = sizeof(buffer);
 			int eomReason = 0;
-			flog_io << "read early input " << "timeout: " << pasynUser->timeout << std::endl;
+			flog_io << "in writeHandle read early input " << "timeout: " << pasynUser->timeout << std::endl;
 			flog_io.flush();
-			status = pasynOctet->read(pvtOctet, pasynUser,
-					buffer, received, &received, &eomReason);
-#ifndef NO_TEMPORARY
-			if (received) debug("FilterInterface::writeHandler(%s): flushing %ld bytes: \"%s\"\n",
-					clientName(), (long)received, StreamBuffer(buffer, received).expand()());
-#endif
+			status = pasynOctet->read(pvtOctet, pasynUser, buffer, received, &received, &eomReason);
+			flog_io << "received: " << received << std::endl;
+			flog_io.flush();
+//#ifndef NO_TEMPORARY
+			//if (received) debug("FilterInterface::writeHandler(%s): flushed out %ld bytes: \"%s\"\n", clientName(), (long)received, StreamBuffer(buffer, received).expand()());
+			debug("FilterInterface::writeHandler(%s): flushed out %ld bytes: \"%s\"\n", clientName(), (long)received, StreamBuffer(buffer, received).expand()());
+//#endif
 		} while (status != asynTimeout);
-	}
+//	}
 
 	// discard any early events
 	receivedEvent = 0;
@@ -677,7 +679,7 @@ writeHandler()
 		pasynOctet->setOutputEos(pvtOctet, pasynUser,
 				NULL, 0);
 	}
-	flog_io << "write sth " << "timeout: " << pasynUser->timeout << std::endl;
+	flog_io << "writing... " << "timeout: " << pasynUser->timeout << std::endl;
 	flog_io.flush();
 	status = pasynOctet->write(pvtOctet, pasynUser,
 			outputBuffer, outputSize, &written);
@@ -890,7 +892,7 @@ readHandler()
 	{
 		// In AsyncRead mode just poll
 		// and read as much as possible
-		pasynUser->timeout = 0.0;
+		pasynUser->timeout = 0.0001;
 		bytesToRead = buffersize;
 	}
 	else
@@ -904,6 +906,9 @@ readHandler()
 	long readMore;
 	int connected;
 
+	static unsigned int loop;
+	loop = 0;
+
 	while (1)
 	{
 		readMore = 0;
@@ -912,13 +917,12 @@ readHandler()
 
 		debug("FilterInterface::readHandler(%s): ioAction=%s "
 				"read(..., bytesToRead=%ld, ...) "
-				"[timeout=%g sec]\n",
+				"[timeout=%g sec] [loop=%d]\n",
 				clientName(), ioActionStr[ioAction],
-				bytesToRead, pasynUser->timeout);
+				bytesToRead, pasynUser->timeout, loop++);
 		flog_io << "reading... " << "timeout: " << pasynUser->timeout << std::endl;
 		flog_io.flush();
-		status = pasynOctet->read(pvtOctet, pasynUser,
-				buffer, bytesToRead, &received, &eomReason);
+		status = pasynOctet->read(pvtOctet, pasynUser, buffer, bytesToRead, &received, &eomReason);
 		debug("FilterInterface::readHandler(%s): "
 				"read returned %s: ioAction=%s received=%ld, eomReason=%s, buffer=\"%s\"\n",
 				clientName(), asynStatusStr[status], ioActionStr[ioAction],
@@ -1005,6 +1009,7 @@ readHandler()
 			case asynTimeout:
 				flog_io << "asynTimeout..." << std::endl;
 				flog_io.flush();
+				debug("FilterInterface::readHandler(%s): ""asynTimeout below is reason\n", clientName());
 				if (received == 0 && waitForReply)
 				{
 					// reply timeout
