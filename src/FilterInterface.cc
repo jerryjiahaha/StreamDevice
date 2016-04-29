@@ -343,6 +343,7 @@ getBusInterface(Client* client,
 		const char* busname, int addr, const char*)
 {
 	FilterInterface* interface = new FilterInterface(client);
+	if ( strcmp(busname, "FILTER" ) ) return NULL; // TODO use regex or others to match *filter*
 	if (interface->connectToBus(busname, addr))
 	{
 		debug ("#My Interface# FilterInterface::getBusInterface(%s, %d): "
@@ -651,7 +652,7 @@ writeHandler()
 			//if (received) debug("FilterInterface::writeHandler(%s): flushed out %ld bytes: \"%s\"\n", clientName(), (long)received, StreamBuffer(buffer, received).expand()());
 			debug("FilterInterface::writeHandler(%s): flushed out %ld bytes: \"%s\"\n", clientName(), (long)received, StreamBuffer(buffer, received).expand()());
 //#endif
-		} while (status != asynTimeout);
+		} while (status != asynTimeout && status != asynError);
 //	}
 
 	// discard any early events
