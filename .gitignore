@@ -4,4 +4,5 @@ dbd
 include
 lib
 bin
+*.log
 
