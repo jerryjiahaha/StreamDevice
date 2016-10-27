@@ -19,7 +19,7 @@
 # Build settings that are NOT module paths should appear in a
 # CONFIG_SITE file.
 
-SUPPORT=${BASE_PATH}/..
+SUPPORT=${BASE_SUPPORT_PATH}
 
 TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 
