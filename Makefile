@@ -1,4 +1,4 @@
-TOP = ..
+TOP = .
 
 DIRS = src
 streamApp_DEPEND_DIRS  = src
@@ -21,4 +21,5 @@ endif
 
 DIRS += streamApp
 
-include $(CONFIG)/RULES_DIRS
+#include $(CONFIG)/RULES_DIRS
+include $(TOP)/configure/RULES_TOP
