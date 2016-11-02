@@ -23,3 +23,8 @@ DIRS += streamApp
 
 #include $(CONFIG)/RULES_DIRS
 include $(TOP)/configure/RULES_TOP
+
+ifdef DEBUG
+CFLAGS += "-DDEBUG_TIMEOUT -fPIC"
+CXXFLAGS += "-DDEBUG_TIMEOUT -fPIC"
+endif
