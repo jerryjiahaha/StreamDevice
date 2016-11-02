@@ -24,3 +24,9 @@ docs/stream.pdf: docs/*.html docs/*.css docs/*.png
 	cd docs; makepdf
 
 pdf: docs/stream.pdf
+
+
+ifdef DEBUG
+CFLAGS += "-DDEBUG_TIMEOUT -fPIC"
+CXXFLAGS += "-DDEBUG_TIMEOUT -fPIC"
+endif
