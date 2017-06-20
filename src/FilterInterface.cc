@@ -631,7 +631,7 @@ writeHandler()
 	asynStatus status;
 	size_t written = 0;
 
-	printf("readTimeout: %lf\n", readTimeout);
+//	printf("readTimeout: %lf\n", readTimeout);
 	pasynUser->timeout = 0.0001;
 //	if (pasynGpib) {
 //		pasynOctet->flush(pvtOctet, pasynUser);
