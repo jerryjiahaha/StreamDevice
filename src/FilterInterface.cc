@@ -17,46 +17,43 @@
  *                                                              *
  ***************************************************************/
 
-#include <iostream>
-#include <fstream>
-
-#include "devStream.h"
 #include "StreamBusInterface.h"
 #include "StreamError.h"
 #include "StreamBuffer.h"
-
-#include <epicsVersion.h>
-#ifdef BASE_VERSION
-#define EPICS_3_13
-#endif
 
 #ifdef EPICS_3_13
 #include <assert.h>
 #include <wdLib.h>
 #include <sysLib.h>
+extern "C" {
+#include "callback.h"
+}
 #else
-#include <epicsAssert.h>
-#include <epicsTime.h>
-#include <epicsTimer.h>
+#include "epicsAssert.h"
+#include "epicsTime.h"
+#include "epicsTimer.h"
+#include "epicsStdioRedirect.h"
+#include "iocsh.h"
+#endif
 
+#include "asynDriver.h"
+#include "asynOctet.h"
+#include "asynInt32.h"
+#include "asynUInt32Digital.h"
+#include "asynGpibDriver.h"
+
+#include "devStream.h"
+#include "MacroMagic.h"
+
+#define Z PRINTF_SIZE_T_PREFIX
+
+#include <iostream>
+#include <fstream>
 #ifdef DEBUG_TIMEOUT
 static std::fstream flog_io("/tmp/stream_io.log", std::fstream::out);
 #else
 static std::fstream flog_io("/dev/null", std::fstream::out);
 #endif
-
-
-extern "C" {
-#include <callback.h>
-}
-#endif
-
-#include <asynDriver.h>
-#include <asynOctet.h>
-#include <asynInt32.h>
-#include <asynUInt32Digital.h>
-#include <asynGpibDriver.h>
-
 
 /* How things are implemented:
 
