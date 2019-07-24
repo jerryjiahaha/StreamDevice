@@ -18,16 +18,19 @@
 #                                                              #
 ################################################################
 
-TOP = ../..
-ifneq ($(wildcard ../../configure),)
-  include $(TOP)/configure/CONFIG
-else ifneq ($(wildcard ../../config),)
-  include $(TOP)/config/CONFIG_APP
-  include $(TOP)/config/RULES_ARCHS
-else
-  TOP= ..
-  include $(TOP)/configure/CONFIG
-endif
+#TOP = ../..
+#ifneq ($(wildcard ../../configure),)
+#  include $(TOP)/configure/CONFIG
+#else ifneq ($(wildcard ../../config),)
+#  include $(TOP)/config/CONFIG_APP
+#  include $(TOP)/config/RULES_ARCHS
+#else
+#  TOP= ..
+#  include $(TOP)/configure/CONFIG
+#endif
+
+TOP= ..
+include $(TOP)/configure/CONFIG
 
 -include CONFIG_STREAM
 -include ../CONFIG_STREAM

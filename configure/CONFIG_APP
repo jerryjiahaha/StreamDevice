@@ -25,3 +25,6 @@ endif
 # dbst based database optimization (default: NO)
 DB_OPT = NO
 HOST_OPT=NO
+
+# XXX modified, to use setup our env
+include $(TOP)/configure/CONFIG_SITE.$(EPICS_HOST_ARCH).Common

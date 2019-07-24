@@ -6,3 +6,6 @@ dbd
 include
 *.pdf
 *.*log
+
+configure/CONFIG_SITE.*
+configure/RELEASE.*
